@@ -275,16 +275,20 @@ export const formsRepository = {
     const formIds = [...new Set(data.map((s) => s.form_id))];
     const submissionIds = data.map((s) => s.id);
 
-    const { data: allFields } = await supabase
+    const { data: allFields, error: fieldsError } = await supabase
       .from('form_fields')
       .select('id, form_id, label, type, field_order')
       .in('form_id', formIds)
       .order('field_order', { ascending: true });
 
-    const { data: fileCountsData } = await supabase
+    if (fieldsError) throw fieldsError;
+
+    const { data: fileCountsData, error: countError } = await supabase
       .from('file_attachments')
-      .select('submission_id', { count: 'exact' })
+      .select('submission_id, count:id')
       .in('submission_id', submissionIds);
+
+    if (countError) throw countError;
 
     const fieldsByForm = (allFields || []).reduce((acc, field) => {
       if (!acc[field.form_id]) acc[field.form_id] = [];
@@ -292,10 +296,13 @@ export const formsRepository = {
       return acc;
     }, {} as Record<string, any[]>);
 
-    const filesCountMap = (fileCountsData || []).reduce((acc, item: any) => {
-      acc[item.submission_id] = item.count;
+    const filesCountMap = (fileCountsData || []).reduce((acc: Record<string, number>, item: any) => {
+      if (!acc[item.submission_id]) {
+        acc[item.submission_id] = 0;
+      }
+      acc[item.submission_id]++;
       return acc;
-    }, {} as Record<string, number>);
+    }, {});
 
     return data.map((submission) => {
       const formFields = fieldsByForm[submission.form_id] || [];
@@ -311,9 +318,12 @@ export const formsRepository = {
         }));
 
       return {
-        ...submission,
+        id: submission.id,
         formId: submission.form_id,
         formName: submission.forms?.form_name || 'Sin nombre',
+        status: submission.status,
+        submittedAt: submission.submitted_at,
+        updatedAt: submission.updated_at,
         filesCount: filesCountMap[submission.id] || 0,
         firstFields,
       };
@@ -752,3 +762,16 @@ export const formsRepository = {
       let errorType = 'NETWORK_ERROR';
       let errorMessage = 'Error de red al conectar con N8N';
 
+      if (error.name === 'AbortError') {
+        errorType = 'TIMEOUT';
+        errorMessage = 'El análisis tomó demasiado tiempo (más de 5 minutos)';
+      } else if (error.message?.includes('N8N respondió')) {
+        errorType = 'N8N_ERROR';
+        errorMessage = error.message;
+      }
+
+      await this.markValidationAsFailed(submissionId, errorType, errorMessage);
+      throw error;
+    }
+  },
+};
