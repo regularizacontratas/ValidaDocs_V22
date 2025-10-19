@@ -267,44 +267,57 @@ export const formsRepository = {
 
     if (error) throw error;
 
-    const processedData = await Promise.all(
-      (data || []).map(async (submission) => {
-        const { data: fields } = await supabase
-          .from('form_fields')
-          .select('id, label, type, field_order')
-          .eq('form_id', submission.form_id)
-          .order('field_order', { ascending: true });
+    if (!data || data.length === 0) {
+      return [];
+    }
 
-        const values = submission.values_json || {};
-        const filesCount = Object.keys(submission.files_json || {}).length;
+    // Optimización: Obtener todos los campos y conteos de archivos en menos consultas
+    const formIds = [...new Set(data.map((s) => s.form_id))];
+    const submissionIds = data.map((s) => s.id);
 
-        const firstFields = (fields || [])
-          .filter((field) => field.type !== 'file')
-          .slice(0, 5)
-          .map((field) => ({
-            id: field.id,
-            label: field.label,
-            type: field.type,
-            value: values[field.id] ?? null,
-          }));
+    const { data: allFields } = await supabase
+      .from('form_fields')
+      .select('id, form_id, label, type, field_order')
+      .in('form_id', formIds)
+      .order('field_order', { ascending: true });
 
-        return {
-          id: submission.id,
-          formId: submission.form_id,
-          formName: submission.forms?.form_name || 'Sin nombre',
-          formDescription: submission.forms?.description,
-          status: submission.status,
-          submittedAt: submission.submitted_at,
-          updatedAt: submission.updated_at,
-          filesCount,
-          firstFields,
-          valuesJson: submission.values_json,
-          filesJson: submission.files_json,
-        };
-      })
-    );
+    const { data: fileCountsData } = await supabase
+      .from('file_attachments')
+      .select('submission_id', { count: 'exact' })
+      .in('submission_id', submissionIds);
 
-    return processedData;
+    const fieldsByForm = (allFields || []).reduce((acc, field) => {
+      if (!acc[field.form_id]) acc[field.form_id] = [];
+      acc[field.form_id].push(field);
+      return acc;
+    }, {} as Record<string, any[]>);
+
+    const filesCountMap = (fileCountsData || []).reduce((acc, item: any) => {
+      acc[item.submission_id] = item.count;
+      return acc;
+    }, {} as Record<string, number>);
+
+    return data.map((submission) => {
+      const formFields = fieldsByForm[submission.form_id] || [];
+      const values = submission.values_json || {};
+      const firstFields = formFields
+        .filter((field) => field.type !== 'file')
+        .slice(0, 5)
+        .map((field) => ({
+          id: field.id,
+          label: field.label,
+          type: field.type,
+          value: values[field.id] ?? null,
+        }));
+
+      return {
+        ...submission,
+        formId: submission.form_id,
+        formName: submission.forms?.form_name || 'Sin nombre',
+        filesCount: filesCountMap[submission.id] || 0,
+        firstFields,
+      };
+    });
   },
 
   /** ✅ Detalle de una submission (ahora archivos traen fieldId y url normalizada) */
@@ -739,16 +752,3 @@ export const formsRepository = {
       let errorType = 'NETWORK_ERROR';
       let errorMessage = 'Error de red al conectar con N8N';
 
-      if (error.name === 'AbortError') {
-        errorType = 'TIMEOUT';
-        errorMessage = 'El análisis tomó demasiado tiempo (más de 5 minutos)';
-      } else if (error.message?.includes('N8N respondió')) {
-        errorType = 'N8N_ERROR';
-        errorMessage = error.message;
-      }
-
-      await this.markValidationAsFailed(submissionId, errorType, errorMessage);
-      throw error;
-    }
-  },
-};
