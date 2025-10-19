@@ -1,0 +1,233 @@
+{
+  "timestamp": "2025-10-09T21:53:25.465Z",
+  "contractVersion": "1.0.0",
+  "discrepancies": [
+    {
+      "kind": "COLUMN",
+      "ref": "companies.created_by",
+      "file": "src/repositories/companies.repository.ts",
+      "line": 45,
+      "message": "Columna 'companies.created_by' tiene status DESCONOCIDO en contrato - verificar en Supabase",
+      "severity": "warning"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "UserRole",
+      "file": "src/types/database.types.ts",
+      "line": 1,
+      "message": "Enum 'UserRole' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "UserRole",
+      "file": "src/App.tsx",
+      "line": 25,
+      "message": "Enum 'UserRole' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "CompanyType",
+      "file": "src/types/database.types.ts",
+      "line": 2,
+      "message": "Enum 'CompanyType' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "FormTargetType",
+      "file": "src/types/database.types.ts",
+      "line": 3,
+      "message": "Enum 'FormTargetType' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "FieldType",
+      "file": "src/types/database.types.ts",
+      "line": 4,
+      "message": "Enum 'FieldType' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "FieldType",
+      "file": "src/components/DynamicField.tsx",
+      "message": "Enum 'FieldType' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "RequestStatus",
+      "file": "src/types/database.types.ts",
+      "line": 5,
+      "message": "Enum 'RequestStatus' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "AssignmentType",
+      "file": "src/types/database.types.ts",
+      "line": 6,
+      "message": "Enum 'AssignmentType' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "AssignmentType",
+      "file": "src/repositories/form-assignments.repository.ts",
+      "line": 48,
+      "message": "Enum 'AssignmentType' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "SubmissionStatus",
+      "file": "src/types/database.types.ts",
+      "line": 7,
+      "message": "Enum 'SubmissionStatus' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "SubmissionStatus",
+      "file": "src/repositories/form-submissions.repository.ts",
+      "line": 24,
+      "message": "Enum 'SubmissionStatus' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "ValidationStatus",
+      "file": "src/types/database.types.ts",
+      "line": 8,
+      "message": "Enum 'ValidationStatus' referenciado en código pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "UserRole",
+      "file": "src/types/database.types.ts",
+      "line": 1,
+      "message": "Enum 'UserRole' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "UserRole",
+      "file": "src/App.tsx",
+      "line": 25,
+      "message": "Enum 'UserRole' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "UserRole",
+      "file": "src/routes/ProtectedRoute.tsx",
+      "line": 4,
+      "message": "Enum 'UserRole' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "UserRole",
+      "file": "src/repositories/auth.repository.ts",
+      "line": 19,
+      "message": "Enum 'UserRole' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "CompanyType",
+      "file": "src/types/database.types.ts",
+      "line": 2,
+      "message": "Enum 'CompanyType' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "FormTargetType",
+      "file": "src/types/database.types.ts",
+      "line": 3,
+      "message": "Enum 'FormTargetType' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "FieldType",
+      "file": "src/types/database.types.ts",
+      "line": 4,
+      "message": "Enum 'FieldType' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "FieldType",
+      "file": "src/components/DynamicField.tsx",
+      "line": 18,
+      "message": "Enum 'FieldType' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "RequestStatus",
+      "file": "src/types/database.types.ts",
+      "line": 5,
+      "message": "Enum 'RequestStatus' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "AssignmentType",
+      "file": "src/types/database.types.ts",
+      "line": 6,
+      "message": "Enum 'AssignmentType' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "AssignmentType",
+      "file": "src/repositories/form-assignments.repository.ts",
+      "line": 48,
+      "message": "Enum 'AssignmentType' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "SubmissionStatus",
+      "file": "src/types/database.types.ts",
+      "line": 7,
+      "message": "Enum 'SubmissionStatus' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "SubmissionStatus",
+      "file": "src/repositories/form-submissions.repository.ts",
+      "line": 24,
+      "message": "Enum 'SubmissionStatus' en inventario pero NO existe en contrato",
+      "severity": "error"
+    },
+    {
+      "kind": "ENUM",
+      "ref": "ValidationStatus",
+      "file": "src/types/database.types.ts",
+      "line": 8,
+      "message": "Enum 'ValidationStatus' en inventario pero NO existe en contrato",
+      "severity": "error"
+    }
+  ],
+  "summary": {
+    "total": 27,
+    "byKind": {
+      "COLUMN": 1,
+      "ENUM": 26
+    },
+    "bySeverity": {
+      "warning": 1,
+      "error": 26
+    }
+  },
+  "status": "FAIL"
+}

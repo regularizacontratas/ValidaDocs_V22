@@ -1,0 +1,623 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "lastUpdated": "2025-10-09",
+  "description": "Contrato de esquema DB para comunicación Frontend ↔ Supabase. Fuente de verdad única.",
+
+  "tables": {
+    "users": {
+      "description": "Usuarios del sistema con autenticación y roles",
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "nullable": false,
+          "primaryKey": true,
+          "description": "ID del usuario desde auth.users"
+        },
+        "email": {
+          "type": "text",
+          "nullable": false,
+          "unique": true,
+          "description": "Email único del usuario"
+        },
+        "name": {
+          "type": "text",
+          "nullable": true,
+          "description": "Nombre completo del usuario"
+        },
+        "role": {
+          "type": "user_role",
+          "nullable": false,
+          "default": "USER",
+          "description": "Rol del usuario en el sistema"
+        },
+        "company_id": {
+          "type": "uuid",
+          "nullable": true,
+          "foreignKey": {
+            "table": "companies",
+            "column": "id"
+          },
+          "description": "Empresa asociada al usuario"
+        },
+        "avatar_url": {
+          "type": "text",
+          "nullable": true,
+          "description": "URL pública del avatar del usuario en bucket user-avatars",
+          "status": "CONFIRMED",
+          "usedInUI": true
+        },
+        "created_by": {
+          "type": "uuid",
+          "nullable": true,
+          "foreignKey": {
+            "table": "users",
+            "column": "id"
+          },
+          "description": "Usuario que creó este registro"
+        },
+        "created_at": {
+          "type": "timestamptz",
+          "nullable": false,
+          "default": "now()",
+          "description": "Fecha de creación del registro"
+        },
+        "last_login_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "description": "Última fecha de login (actualizado manualmente desde frontend)",
+          "notes": "CRÍTICO: Actualmente seteado desde frontend, considerar trigger"
+        },
+        "updated_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "status": "DESCONOCIDO",
+          "notes": "No confirmado si existe en DB, no usado en código frontend"
+        }
+      },
+      "indexes": ["email"],
+      "rlsEnabled": true
+    },
+
+    "companies": {
+      "description": "Empresas del sistema",
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "nullable": false,
+          "primaryKey": true,
+          "default": "gen_random_uuid()",
+          "description": "ID único de la empresa"
+        },
+        "name": {
+          "type": "text",
+          "nullable": false,
+          "description": "Nombre de la empresa"
+        },
+        "company_type": {
+          "type": "company_type",
+          "nullable": false,
+          "description": "Tipo de empresa"
+        },
+        "rut": {
+          "type": "text",
+          "nullable": true,
+          "unique": true,
+          "description": "RUT único de la empresa"
+        },
+        "logo_url": {
+          "type": "text",
+          "nullable": true,
+          "description": "URL pública del logo en bucket company-logos",
+          "status": "CONFIRMED",
+          "usedInUI": true
+        },
+        "created_by": {
+          "type": "uuid",
+          "nullable": true,
+          "foreignKey": {
+            "table": "users",
+            "column": "id"
+          },
+          "status": "DESCONOCIDO",
+          "description": "Usuario que creó este registro",
+          "notes": "Usado en código pero existencia en DB no confirmada"
+        },
+        "created_at": {
+          "type": "timestamptz",
+          "nullable": false,
+          "default": "now()",
+          "description": "Fecha de creación"
+        },
+        "updated_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "description": "Fecha de última actualización",
+          "notes": "CRÍTICO: Actualmente seteado manualmente desde frontend (línea 59), debería ser trigger"
+        }
+      },
+      "indexes": ["rut"],
+      "rlsEnabled": true
+    },
+
+    "forms": {
+      "description": "Formularios dinámicos del sistema",
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "nullable": false,
+          "primaryKey": true,
+          "default": "gen_random_uuid()",
+          "description": "ID único del formulario"
+        },
+        "form_name": {
+          "type": "text",
+          "nullable": false,
+          "description": "Nombre del formulario"
+        },
+        "description": {
+          "type": "text",
+          "nullable": true,
+          "description": "Descripción del formulario"
+        },
+        "target_type": {
+          "type": "form_target_type",
+          "nullable": false,
+          "description": "Tipo de entidad objetivo del formulario"
+        },
+        "form_prompt": {
+          "type": "text",
+          "nullable": true,
+          "description": "Prompt de AI para generación/validación del formulario",
+          "uiMapping": "ai_prompt",
+          "notes": "MAPEO UI: 'ai_prompt' (UI) ↔ 'form_prompt' (DB)",
+          "status": "DESCONOCIDO",
+          "usedInUI": false
+        },
+        "owner_company_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "companies",
+            "column": "id"
+          },
+          "description": "Empresa propietaria del formulario"
+        },
+        "created_at": {
+          "type": "timestamptz",
+          "nullable": false,
+          "default": "now()",
+          "description": "Fecha de creación"
+        },
+        "updated_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "description": "Fecha de última actualización",
+          "notes": "Se asume trigger automático, no seteado desde frontend"
+        },
+        "version": {
+          "type": "integer",
+          "nullable": true,
+          "default": "1",
+          "description": "Versión del formulario"
+        }
+      },
+      "indexes": ["owner_company_id"],
+      "rlsEnabled": true
+    },
+
+    "form_fields": {
+      "description": "Campos de los formularios dinámicos",
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "nullable": false,
+          "primaryKey": true,
+          "default": "gen_random_uuid()",
+          "description": "ID único del campo"
+        },
+        "form_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "forms",
+            "column": "id",
+            "onDelete": "CASCADE"
+          },
+          "description": "ID del formulario al que pertenece"
+        },
+        "label": {
+          "type": "text",
+          "nullable": false,
+          "uiMapping": "field_label",
+          "description": "Etiqueta visible del campo",
+          "notes": "MAPEO UI: 'field_label' (UI) ↔ 'label' (DB)"
+        },
+        "type": {
+          "type": "field_type",
+          "nullable": false,
+          "uiMapping": "field_type",
+          "description": "Tipo de campo",
+          "notes": "MAPEO UI: 'field_type' (UI) ↔ 'type' (DB)"
+        },
+        "field_order": {
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "uiMapping": "field_order",
+          "description": "Orden de visualización del campo",
+          "notes": "MAPEO UI: directo 'field_order' ↔ 'field_order'"
+        },
+        "required": {
+          "type": "boolean",
+          "nullable": false,
+          "default": "false",
+          "uiMapping": "is_required",
+          "description": "Indica si el campo es obligatorio",
+          "notes": "MAPEO UI: 'is_required' (UI) ↔ 'required' (DB)"
+        },
+        "options": {
+          "type": "jsonb",
+          "nullable": true,
+          "uiMapping": "options",
+          "description": "Opciones para campos tipo select, radio, checkbox",
+          "notes": "MAPEO UI: directo 'options' ↔ 'options'"
+        },
+        "ai_validation_prompt": {
+          "type": "text",
+          "nullable": true,
+          "uiMapping": "ai_validation_prompt",
+          "description": "Prompt de AI para validación del campo",
+          "notes": "MAPEO UI: directo 'ai_validation_prompt' ↔ 'ai_validation_prompt'"
+        },
+        "created_at": {
+          "type": "timestamptz",
+          "nullable": false,
+          "default": "now()",
+          "description": "Fecha de creación"
+        },
+        "updated_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "description": "Fecha de última actualización",
+          "notes": "Se asume trigger automático"
+        }
+      },
+      "indexes": ["form_id", "field_order"],
+      "rlsEnabled": true
+    },
+
+    "form_assignments": {
+      "description": "Asignaciones de formularios a empresas",
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "nullable": false,
+          "primaryKey": true,
+          "default": "gen_random_uuid()",
+          "description": "ID único de la asignación"
+        },
+        "form_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "forms",
+            "column": "id",
+            "onDelete": "CASCADE"
+          },
+          "description": "ID del formulario asignado"
+        },
+        "owner_company_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "companies",
+            "column": "id"
+          },
+          "description": "Empresa propietaria del formulario"
+        },
+        "assigned_company_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "companies",
+            "column": "id"
+          },
+          "description": "Empresa a la que se asigna el formulario"
+        },
+        "assignment_type": {
+          "type": "assignment_type",
+          "nullable": false,
+          "default": "DIRECT",
+          "description": "Tipo de asignación"
+        },
+        "can_share": {
+          "type": "boolean",
+          "nullable": false,
+          "default": "false",
+          "description": "Permite compartir el formulario"
+        },
+        "is_active": {
+          "type": "boolean",
+          "nullable": false,
+          "default": "true",
+          "description": "Indica si la asignación está activa"
+        },
+        "expires_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "description": "Fecha de expiración de la asignación"
+        },
+        "created_at": {
+          "type": "timestamptz",
+          "nullable": false,
+          "default": "now()",
+          "description": "Fecha de creación"
+        }
+      },
+      "indexes": ["form_id", "assigned_company_id"],
+      "rlsEnabled": true
+    },
+
+    "form_submissions": {
+      "description": "Envíos/respuestas de formularios",
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "nullable": false,
+          "primaryKey": true,
+          "default": "gen_random_uuid()",
+          "description": "ID único del envío"
+        },
+        "form_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "forms",
+            "column": "id"
+          },
+          "description": "ID del formulario enviado"
+        },
+        "target_id": {
+          "type": "uuid",
+          "nullable": false,
+          "description": "ID de la entidad objetivo (persona, empresa, etc.)"
+        },
+        "values_json": {
+          "type": "jsonb",
+          "nullable": false,
+          "default": "{}",
+          "description": "Valores procesados del formulario"
+        },
+        "raw_values_json": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "Valores crudos originales del formulario"
+        },
+        "files_json": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "Referencias a archivos adjuntos"
+        },
+        "status": {
+          "type": "submission_status",
+          "nullable": false,
+          "default": "DRAFT",
+          "description": "Estado del envío"
+        },
+        "submitted_by": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "users",
+            "column": "id"
+          },
+          "description": "Usuario que realizó el envío"
+        },
+        "submitted_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "description": "Fecha de envío",
+          "notes": "CRÍTICO: Actualmente seteado manualmente desde frontend (línea 66), debería ser DEFAULT now() o trigger"
+        },
+        "updated_at": {
+          "type": "timestamptz",
+          "nullable": true,
+          "description": "Fecha de última actualización",
+          "notes": "CRÍTICO: Actualmente seteado manualmente desde frontend (línea 51), debería ser trigger"
+        }
+      },
+      "indexes": ["form_id", "target_id", "submitted_by"],
+      "rlsEnabled": true
+    },
+
+    "file_attachments": {
+      "description": "Archivos adjuntos a envíos de formularios",
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "nullable": false,
+          "primaryKey": true,
+          "default": "gen_random_uuid()",
+          "description": "ID único del archivo adjunto"
+        },
+        "submission_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "form_submissions",
+            "column": "id",
+            "onDelete": "CASCADE"
+          },
+          "description": "ID del envío al que pertenece"
+        },
+        "field_id": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "form_fields",
+            "column": "id"
+          },
+          "description": "ID del campo que generó el archivo"
+        },
+        "file_name": {
+          "type": "text",
+          "nullable": false,
+          "description": "Nombre original del archivo"
+        },
+        "file_size": {
+          "type": "bigint",
+          "nullable": false,
+          "description": "Tamaño del archivo en bytes"
+        },
+        "mime_type": {
+          "type": "text",
+          "nullable": false,
+          "description": "Tipo MIME del archivo"
+        },
+        "storage_path": {
+          "type": "text",
+          "nullable": false,
+          "description": "Ruta del archivo en storage bucket"
+        },
+        "uploaded_by": {
+          "type": "uuid",
+          "nullable": false,
+          "foreignKey": {
+            "table": "users",
+            "column": "id"
+          },
+          "description": "Usuario que subió el archivo"
+        },
+        "uploaded_at": {
+          "type": "timestamptz",
+          "nullable": false,
+          "default": "now()",
+          "description": "Fecha de subida"
+        }
+      },
+      "indexes": ["submission_id", "field_id"],
+      "rlsEnabled": true
+    }
+  },
+
+  "enums": {
+    "user_role": {
+      "description": "Roles de usuarios en el sistema",
+      "values": ["SUPER_ADMIN", "ADMIN", "USER"],
+      "usedInCode": true
+    },
+    "company_type": {
+      "description": "Tipos de empresa",
+      "values": ["CLIENT", "SUPPLIER", "PARTNER", "INTERNAL"],
+      "usedInCode": true
+    },
+    "form_target_type": {
+      "description": "Tipos de entidad objetivo de formularios",
+      "values": ["COMPANY", "PERSON", "VEHICLE", "EQUIPMENT"],
+      "usedInCode": true
+    },
+    "field_type": {
+      "description": "Tipos de campos de formulario",
+      "values": ["text", "number", "date", "email", "phone", "textarea", "file", "select", "checkbox", "radio"],
+      "usedInCode": true
+    },
+    "request_status": {
+      "description": "Estados de solicitudes de formulario",
+      "values": ["PENDING", "APPROVED", "REJECTED", "EXPIRED"],
+      "usedInCode": true
+    },
+    "assignment_type": {
+      "description": "Tipos de asignación de formularios",
+      "values": ["DIRECT", "REQUESTED", "INHERITED"],
+      "usedInCode": true
+    },
+    "submission_status": {
+      "description": "Estados de envío de formularios",
+      "values": ["DRAFT", "SUBMITTED", "VALIDATED", "REJECTED", "APPROVED"],
+      "usedInCode": true
+    },
+    "validation_status": {
+      "description": "Estados de validación de documentos",
+      "values": ["PENDING", "IN_PROGRESS", "COMPLETED", "FAILED"],
+      "usedInCode": true
+    }
+  },
+
+  "storageBuckets": {
+    "form-attachments": {
+      "description": "Archivos adjuntos de formularios",
+      "public": true,
+      "allowedMimeTypes": ["image/*", "application/pdf", "application/*"],
+      "maxFileSizeMB": 10,
+      "pathStructure": "{companyId}/{submissionId}/{fileName}",
+      "usedInCode": true,
+      "upsert": false
+    },
+    "company-logos": {
+      "description": "Logos de empresas",
+      "public": true,
+      "allowedMimeTypes": ["image/jpeg", "image/jpg", "image/png", "image/webp"],
+      "maxFileSizeMB": 5,
+      "pathStructure": "{companyId}/{companyId}_logo_{timestamp}.{ext}",
+      "usedInCode": true,
+      "upsert": true
+    },
+    "user-avatars": {
+      "description": "Avatares de usuarios",
+      "public": true,
+      "allowedMimeTypes": ["image/jpeg", "image/jpg", "image/png", "image/webp"],
+      "maxFileSizeMB": 5,
+      "pathStructure": "{userId}/{userId}_avatar_{timestamp}.{ext}",
+      "usedInCode": true,
+      "upsert": true
+    }
+  },
+
+  "uiMappings": {
+    "forms": {
+      "ai_prompt": {
+        "dbColumn": "form_prompt",
+        "direction": "bidirectional",
+        "notes": "UI usa 'ai_prompt', DB tiene 'form_prompt'"
+      }
+    },
+    "form_fields": {
+      "field_label": {
+        "dbColumn": "label",
+        "direction": "bidirectional"
+      },
+      "field_type": {
+        "dbColumn": "type",
+        "direction": "bidirectional"
+      },
+      "is_required": {
+        "dbColumn": "required",
+        "direction": "bidirectional"
+      },
+      "field_order": {
+        "dbColumn": "field_order",
+        "direction": "bidirectional",
+        "notes": "Mismo nombre en UI y DB"
+      },
+      "ai_validation_prompt": {
+        "dbColumn": "ai_validation_prompt",
+        "direction": "bidirectional",
+        "notes": "Mismo nombre en UI y DB"
+      },
+      "options": {
+        "dbColumn": "options",
+        "direction": "bidirectional",
+        "notes": "Mismo nombre en UI y DB"
+      }
+    }
+  },
+
+  "criticalNotes": [
+    "TIMESTAMPS: companies.updated_at, form_submissions.updated_at, form_submissions.submitted_at y users.last_login_at se setean manualmente desde frontend. Deben migrar a triggers DB.",
+    "INTERFACES TYPESCRIPT: avatar_url, logo_url y created_by faltan en types/database.types.ts",
+    "RLS: Todas las tablas deben tener RLS habilitado con políticas apropiadas por rol",
+    "form_prompt: Columna mencionada en spec pero solo leída con select(*), status DESCONOCIDO",
+    "created_by: Usado en companies y users pero existencia en DB no confirmada"
+  ]
+}

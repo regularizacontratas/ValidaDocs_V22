@@ -1,0 +1,56 @@
+{
+  "UserRole": {
+    "valuesSeen": ["SUPER_ADMIN", "ADMIN", "USER"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 1 },
+      { "file": "src/App.tsx", "lines": [25, 52, 61] },
+      { "file": "src/routes/ProtectedRoute.tsx", "line": 4 },
+      { "file": "src/repositories/auth.repository.ts", "line": 19 }
+    ]
+  },
+  "CompanyType": {
+    "valuesSeen": ["CLIENT", "SUPPLIER", "PARTNER", "INTERNAL"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 2 }
+    ]
+  },
+  "FormTargetType": {
+    "valuesSeen": ["COMPANY", "PERSON", "VEHICLE", "EQUIPMENT"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 3 }
+    ]
+  },
+  "FieldType": {
+    "valuesSeen": ["text", "number", "date", "email", "phone", "textarea", "file", "select", "checkbox", "radio"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 4 },
+      { "file": "src/components/DynamicField.tsx", "lines": [18, 20, 22, 24, 26, 28, 30, 32, 34, 36] }
+    ]
+  },
+  "RequestStatus": {
+    "valuesSeen": ["PENDING", "APPROVED", "REJECTED", "EXPIRED"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 5 }
+    ]
+  },
+  "AssignmentType": {
+    "valuesSeen": ["DIRECT", "REQUESTED", "INHERITED"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 6 },
+      { "file": "src/repositories/form-assignments.repository.ts", "line": 48 }
+    ]
+  },
+  "SubmissionStatus": {
+    "valuesSeen": ["DRAFT", "SUBMITTED", "VALIDATED", "REJECTED", "APPROVED"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 7 },
+      { "file": "src/repositories/form-submissions.repository.ts", "lines": [24, 65] }
+    ]
+  },
+  "ValidationStatus": {
+    "valuesSeen": ["PENDING", "IN_PROGRESS", "COMPLETED", "FAILED"],
+    "files": [
+      { "file": "src/types/database.types.ts", "line": 8 }
+    ]
+  }
+}

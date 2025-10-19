@@ -1,0 +1,71 @@
+[
+  {
+    "path": "/",
+    "component": "Navigate",
+    "protectedByRole": [],
+    "file": "src/App.tsx",
+    "redirectTo": "/login",
+    "exports": []
+  },
+  {
+    "path": "/login",
+    "component": "LoginPage",
+    "protectedByRole": [],
+    "file": "src/pages/auth/LoginPage.tsx",
+    "exports": ["LoginPage"]
+  },
+  {
+    "path": "/register",
+    "component": "RegisterPage",
+    "protectedByRole": [],
+    "file": "src/pages/auth/RegisterPage.tsx",
+    "exports": ["RegisterPage"]
+  },
+  {
+    "path": "/superadmin/dashboard",
+    "component": "SuperAdminDashboard",
+    "protectedByRole": ["SUPER_ADMIN"],
+    "file": "src/pages/superadmin/SuperAdminDashboard.tsx",
+    "exports": ["SuperAdminDashboard"],
+    "edges": ["/superadmin/companies", "/superadmin/users"]
+  },
+  {
+    "path": "/superadmin/companies",
+    "component": "CompaniesManagement",
+    "protectedByRole": ["SUPER_ADMIN"],
+    "file": "src/pages/superadmin/CompaniesManagement.tsx",
+    "exports": ["CompaniesManagement"],
+    "edges": ["/superadmin/dashboard"]
+  },
+  {
+    "path": "/superadmin/users",
+    "component": "UsersManagement",
+    "protectedByRole": ["SUPER_ADMIN"],
+    "file": "src/pages/superadmin/UsersManagement.tsx",
+    "exports": ["UsersManagement"],
+    "edges": ["/superadmin/dashboard"]
+  },
+  {
+    "path": "/admin/dashboard",
+    "component": "AdminDashboard",
+    "protectedByRole": ["ADMIN"],
+    "file": "src/pages/admin/AdminDashboard.tsx",
+    "exports": ["AdminDashboard"]
+  },
+  {
+    "path": "/user/forms",
+    "component": "UserForms",
+    "protectedByRole": ["USER"],
+    "file": "src/pages/user/UserForms.tsx",
+    "exports": ["UserForms"],
+    "edges": ["/user/forms/:formId"]
+  },
+  {
+    "path": "/user/forms/:formId",
+    "component": "FillForm",
+    "protectedByRole": ["USER"],
+    "file": "src/pages/user/FillForm.tsx",
+    "exports": ["FillForm"],
+    "edges": ["/user/forms"]
+  }
+]

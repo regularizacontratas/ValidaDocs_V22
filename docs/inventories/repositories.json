@@ -1,0 +1,515 @@
+[
+  {
+    "file": "src/repositories/auth.repository.ts",
+    "exportedSymbols": ["authRepository"],
+    "methods": [
+      {
+        "name": "signUpAndUpsertUser",
+        "supabaseTables": ["users"],
+        "columnsRead": [],
+        "columnsWritten": ["id", "name", "email", "role"],
+        "enumsUsed": ["UserRole"],
+        "bucketsUsed": [],
+        "notes": "Crea usuario en auth.users y luego en users table con rol USER por defecto"
+      },
+      {
+        "name": "signIn",
+        "supabaseTables": ["users"],
+        "columnsRead": [],
+        "columnsWritten": ["last_login_at"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Actualiza last_login_at manualmente en el frontend"
+      },
+      {
+        "name": "signOut",
+        "supabaseTables": [],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Solo auth, no toca tabla users"
+      },
+      {
+        "name": "getCurrentUser",
+        "supabaseTables": [],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Solo lee auth.users"
+      },
+      {
+        "name": "getCurrentUserWithRole",
+        "supabaseTables": ["users"],
+        "columnsRead": ["id", "name", "email", "role", "company_id", "created_by", "created_at", "last_login_at"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "NO lee avatar_url"
+      },
+      {
+        "name": "getUserProfile",
+        "supabaseTables": ["users"],
+        "columnsRead": ["id", "name", "email", "role", "company_id"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "NO lee avatar_url"
+      },
+      {
+        "name": "createUserWithRole",
+        "supabaseTables": ["users"],
+        "columnsRead": [],
+        "columnsWritten": ["id", "name", "email", "role", "company_id", "created_by"],
+        "enumsUsed": ["UserRole"],
+        "bucketsUsed": [],
+        "notes": "NO escribe avatar_url en creación"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/users.repository.ts",
+    "exportedSymbols": ["usersRepository"],
+    "methods": [
+      {
+        "name": "getAll",
+        "supabaseTables": ["users"],
+        "columnsRead": ["id", "name", "email", "role", "company_id", "avatar_url", "created_at", "last_login_at"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "SÍ lee avatar_url"
+      },
+      {
+        "name": "getById",
+        "supabaseTables": ["users"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Select * lee todas las columnas"
+      },
+      {
+        "name": "listUsersByCompany",
+        "supabaseTables": ["users"],
+        "columnsRead": ["id", "name", "email", "role", "company_id", "created_at", "last_login_at"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "NO lee avatar_url"
+      },
+      {
+        "name": "updateUser",
+        "supabaseTables": ["users"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Actualiza cualquier campo del partial"
+      },
+      {
+        "name": "updateUserRole",
+        "supabaseTables": ["users"],
+        "columnsRead": [],
+        "columnsWritten": ["role", "company_id"],
+        "enumsUsed": ["UserRole"],
+        "bucketsUsed": [],
+        "notes": "Solo actualiza role y company_id"
+      },
+      {
+        "name": "deleteUser",
+        "supabaseTables": ["users"],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Elimina usuario de tabla users"
+      },
+      {
+        "name": "checkEmailExists",
+        "supabaseTables": ["users"],
+        "columnsRead": ["id"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Verifica si email existe"
+      },
+      {
+        "name": "updateUserAvatar",
+        "supabaseTables": ["users"],
+        "columnsRead": [],
+        "columnsWritten": ["avatar_url"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Actualiza avatar_url (acepta string | null)"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/companies.repository.ts",
+    "exportedSymbols": ["companiesRepository"],
+    "methods": [
+      {
+        "name": "getAll",
+        "supabaseTables": ["companies"],
+        "columnsRead": ["id", "name", "company_type", "rut", "logo_url", "created_at", "updated_at"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "SÍ lee logo_url"
+      },
+      {
+        "name": "getById",
+        "supabaseTables": ["companies"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Select * lee todas las columnas"
+      },
+      {
+        "name": "create",
+        "supabaseTables": ["companies"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": ["CompanyType"],
+        "bucketsUsed": [],
+        "notes": "Inserta desde partial"
+      },
+      {
+        "name": "createCompany",
+        "supabaseTables": ["companies"],
+        "columnsRead": [],
+        "columnsWritten": ["id", "name", "rut", "company_type", "created_by"],
+        "enumsUsed": ["CompanyType"],
+        "bucketsUsed": [],
+        "notes": "NO inserta logo_url en creación, usa created_by"
+      },
+      {
+        "name": "updateCompany",
+        "supabaseTables": ["companies"],
+        "columnsRead": [],
+        "columnsWritten": ["*", "updated_at"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Actualiza updated_at MANUALMENTE desde frontend"
+      },
+      {
+        "name": "deleteCompany",
+        "supabaseTables": ["companies"],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Elimina empresa"
+      },
+      {
+        "name": "checkRutExists",
+        "supabaseTables": ["companies"],
+        "columnsRead": ["id"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Verifica si RUT existe"
+      },
+      {
+        "name": "updateCompanyLogo",
+        "supabaseTables": ["companies"],
+        "columnsRead": [],
+        "columnsWritten": ["logo_url"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Actualiza logo_url después de subir imagen"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/forms.repository.ts",
+    "exportedSymbols": ["formsRepository"],
+    "methods": [
+      {
+        "name": "getByCompany",
+        "supabaseTables": ["forms"],
+        "columnsRead": ["id", "form_name", "description", "target_type", "owner_company_id", "updated_at", "version"],
+        "columnsWritten": [],
+        "enumsUsed": ["FormTargetType"],
+        "bucketsUsed": [],
+        "notes": "NO lee form_prompt ni ai_prompt"
+      },
+      {
+        "name": "listFormsByOwnerCompany",
+        "supabaseTables": ["forms"],
+        "columnsRead": ["id", "form_name", "target_type", "updated_at"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "NO lee form_prompt"
+      },
+      {
+        "name": "getById",
+        "supabaseTables": ["forms"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Select * lee todas las columnas incluyendo form_prompt si existe"
+      },
+      {
+        "name": "getFormWithFields",
+        "supabaseTables": ["forms", "form_fields"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Lee ambas tablas con select *"
+      },
+      {
+        "name": "create",
+        "supabaseTables": ["forms"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": ["FormTargetType"],
+        "bucketsUsed": [],
+        "notes": "Inserta desde partial, podría incluir form_prompt"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/form-fields.repository.ts",
+    "exportedSymbols": ["formFieldsRepository"],
+    "methods": [
+      {
+        "name": "getByFormId",
+        "supabaseTables": ["form_fields"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": ["FieldType"],
+        "bucketsUsed": [],
+        "notes": "Lee todos los campos ordenados por field_order"
+      },
+      {
+        "name": "create",
+        "supabaseTables": ["form_fields"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": ["FieldType"],
+        "bucketsUsed": [],
+        "notes": "Inserta campo desde partial"
+      },
+      {
+        "name": "bulkCreate",
+        "supabaseTables": ["form_fields"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": ["FieldType"],
+        "bucketsUsed": [],
+        "notes": "Inserta múltiples campos"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/form-assignments.repository.ts",
+    "exportedSymbols": ["formAssignmentsRepository"],
+    "methods": [
+      {
+        "name": "getByCompany",
+        "supabaseTables": ["form_assignments", "forms"],
+        "columnsRead": ["*", "forms:form_id(id, form_name, description, target_type)"],
+        "columnsWritten": [],
+        "enumsUsed": ["AssignmentType"],
+        "bucketsUsed": [],
+        "notes": "JOIN con forms"
+      },
+      {
+        "name": "listAssignmentsForCompany",
+        "supabaseTables": ["form_assignments", "forms"],
+        "columnsRead": ["id", "form_id", "owner_company_id", "assigned_company_id", "is_active", "expires_at", "created_at", "forms(form_name, target_type)"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "JOIN con forms"
+      },
+      {
+        "name": "create",
+        "supabaseTables": ["form_assignments"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": ["AssignmentType"],
+        "bucketsUsed": [],
+        "notes": "Inserta asignación"
+      },
+      {
+        "name": "createAssignment",
+        "supabaseTables": ["form_assignments"],
+        "columnsRead": [],
+        "columnsWritten": ["id", "form_id", "owner_company_id", "assigned_company_id", "assignment_type", "is_active", "can_share"],
+        "enumsUsed": ["AssignmentType"],
+        "bucketsUsed": [],
+        "notes": "Crea asignación DIRECT"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/form-submissions.repository.ts",
+    "exportedSymbols": ["formSubmissionsRepository"],
+    "methods": [
+      {
+        "name": "create",
+        "supabaseTables": ["form_submissions"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": ["SubmissionStatus"],
+        "bucketsUsed": [],
+        "notes": "Inserta submission"
+      },
+      {
+        "name": "createDraft",
+        "supabaseTables": ["form_submissions"],
+        "columnsRead": [],
+        "columnsWritten": ["id", "form_id", "target_id", "values_json", "status", "submitted_by"],
+        "enumsUsed": ["SubmissionStatus"],
+        "bucketsUsed": [],
+        "notes": "Crea borrador con status DRAFT"
+      },
+      {
+        "name": "update",
+        "supabaseTables": ["form_submissions"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Actualiza submission"
+      },
+      {
+        "name": "saveValues",
+        "supabaseTables": ["form_submissions"],
+        "columnsRead": [],
+        "columnsWritten": ["values_json", "updated_at"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Actualiza updated_at MANUALMENTE desde frontend"
+      },
+      {
+        "name": "submitSubmission",
+        "supabaseTables": ["form_submissions"],
+        "columnsRead": [],
+        "columnsWritten": ["status", "submitted_at"],
+        "enumsUsed": ["SubmissionStatus"],
+        "bucketsUsed": [],
+        "notes": "Cambia status a SUBMITTED y setea submitted_at MANUALMENTE"
+      },
+      {
+        "name": "getById",
+        "supabaseTables": ["form_submissions"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Lee submission completa"
+      },
+      {
+        "name": "getByFormAndTarget",
+        "supabaseTables": ["form_submissions"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Lee submissions por form y target"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/file-attachments.repository.ts",
+    "exportedSymbols": ["fileAttachmentsRepository"],
+    "methods": [
+      {
+        "name": "create",
+        "supabaseTables": ["file_attachments"],
+        "columnsRead": [],
+        "columnsWritten": ["*"],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Inserta attachment"
+      },
+      {
+        "name": "getBySubmission",
+        "supabaseTables": ["file_attachments"],
+        "columnsRead": ["*"],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Lee attachments por submission"
+      },
+      {
+        "name": "delete",
+        "supabaseTables": ["file_attachments"],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": [],
+        "notes": "Elimina attachment"
+      }
+    ]
+  },
+  {
+    "file": "src/repositories/storage.repository.ts",
+    "exportedSymbols": ["storageRepository"],
+    "methods": [
+      {
+        "name": "uploadFile",
+        "supabaseTables": [],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": ["form-attachments"],
+        "notes": "Sube archivo a form-attachments bucket, retorna URL pública"
+      },
+      {
+        "name": "uploadAttachment",
+        "supabaseTables": ["file_attachments"],
+        "columnsRead": [],
+        "columnsWritten": ["id", "submission_id", "field_id", "file_name", "file_size", "mime_type", "storage_path", "uploaded_by"],
+        "enumsUsed": [],
+        "bucketsUsed": ["form-attachments"],
+        "notes": "Sube a bucket Y crea registro en file_attachments"
+      },
+      {
+        "name": "deleteFile",
+        "supabaseTables": [],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": ["form-attachments"],
+        "notes": "Elimina archivo del bucket"
+      },
+      {
+        "name": "getPublicUrl",
+        "supabaseTables": [],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": ["form-attachments"],
+        "notes": "Obtiene URL pública de archivo"
+      },
+      {
+        "name": "uploadCompanyLogo",
+        "supabaseTables": [],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": ["company-logos"],
+        "notes": "Sube logo a company-logos bucket con upsert:true"
+      },
+      {
+        "name": "uploadUserAvatar",
+        "supabaseTables": [],
+        "columnsRead": [],
+        "columnsWritten": [],
+        "enumsUsed": [],
+        "bucketsUsed": ["user-avatars"],
+        "notes": "Sube avatar a user-avatars bucket con upsert:true"
+      }
+    ]
+  }
+]

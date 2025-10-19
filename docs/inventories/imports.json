@@ -1,0 +1,301 @@
+{
+  "summary": {
+    "totalFiles": 33,
+    "totalImports": 149,
+    "unresolvedImports": 0,
+    "caseMismatchIssues": 0
+  },
+  "imports": [
+    {
+      "file": "src/App.tsx",
+      "imports": [
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "./contexts/AuthContext", "type": "relative", "resolved": true, "existsAt": "src/contexts/AuthContext.tsx", "caseMismatch": false },
+        { "spec": "./routes/ProtectedRoute", "type": "relative", "resolved": true, "existsAt": "src/routes/ProtectedRoute.tsx", "caseMismatch": false },
+        { "spec": "./pages/auth/LoginPage", "type": "relative", "resolved": true, "existsAt": "src/pages/auth/LoginPage.tsx", "caseMismatch": false },
+        { "spec": "./pages/auth/RegisterPage", "type": "relative", "resolved": true, "existsAt": "src/pages/auth/RegisterPage.tsx", "caseMismatch": false },
+        { "spec": "./pages/superadmin/SuperAdminDashboard", "type": "relative", "resolved": true, "existsAt": "src/pages/superadmin/SuperAdminDashboard.tsx", "caseMismatch": false },
+        { "spec": "./pages/superadmin/CompaniesManagement", "type": "relative", "resolved": true, "existsAt": "src/pages/superadmin/CompaniesManagement.tsx", "caseMismatch": false },
+        { "spec": "./pages/superadmin/UsersManagement", "type": "relative", "resolved": true, "existsAt": "src/pages/superadmin/UsersManagement.tsx", "caseMismatch": false },
+        { "spec": "./pages/admin/AdminDashboard", "type": "relative", "resolved": true, "existsAt": "src/pages/admin/AdminDashboard.tsx", "caseMismatch": false },
+        { "spec": "./pages/user/UserForms", "type": "relative", "resolved": true, "existsAt": "src/pages/user/UserForms.tsx", "caseMismatch": false },
+        { "spec": "./pages/user/FillForm", "type": "relative", "resolved": true, "existsAt": "src/pages/user/FillForm.tsx", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/main.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-dom/client", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "./App.tsx", "type": "relative", "resolved": true, "existsAt": "src/App.tsx", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/contexts/AuthContext.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false },
+        { "spec": "../repositories/auth.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/auth.repository.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/hooks/useAuth.ts",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../contexts/AuthContext", "type": "relative", "resolved": true, "existsAt": "src/contexts/AuthContext.tsx", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/routes/ProtectedRoute.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/layouts/DashboardLayout.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../components/Button", "type": "relative", "resolved": true, "existsAt": "src/components/Button.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/lib/supabase.ts",
+      "imports": [
+        { "spec": "@supabase/supabase-js", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/repositories/auth.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/users.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/companies.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/forms.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/form-fields.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/form-assignments.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/form-submissions.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/file-attachments.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/repositories/storage.repository.ts",
+      "imports": [
+        { "spec": "../lib/supabase", "type": "relative", "resolved": true, "existsAt": "src/lib/supabase.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/services/submissions.service.ts",
+      "imports": [
+        { "spec": "../repositories/form-submissions.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/form-submissions.repository.ts", "caseMismatch": false },
+        { "spec": "../repositories/storage.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/storage.repository.ts", "caseMismatch": false },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/components/Button.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/components/Input.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/components/Select.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/components/Modal.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/components/ImageUpload.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/components/DynamicField.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false },
+        { "spec": "./Input", "type": "relative", "resolved": true, "existsAt": "src/components/Input.tsx", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/pages/auth/LoginPage.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../../components/Input", "type": "relative", "resolved": true, "existsAt": "src/components/Input.tsx", "caseMismatch": false },
+        { "spec": "../../components/Button", "type": "relative", "resolved": true, "existsAt": "src/components/Button.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/pages/auth/RegisterPage.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../../components/Input", "type": "relative", "resolved": true, "existsAt": "src/components/Input.tsx", "caseMismatch": false },
+        { "spec": "../../components/Button", "type": "relative", "resolved": true, "existsAt": "src/components/Button.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/pages/admin/AdminDashboard.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../layouts/DashboardLayout", "type": "relative", "resolved": true, "existsAt": "src/layouts/DashboardLayout.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../../repositories/forms.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/forms.repository.ts", "caseMismatch": false },
+        { "spec": "../../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/pages/user/UserForms.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../layouts/DashboardLayout", "type": "relative", "resolved": true, "existsAt": "src/layouts/DashboardLayout.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../../repositories/form-assignments.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/form-assignments.repository.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/pages/user/FillForm.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../layouts/DashboardLayout", "type": "relative", "resolved": true, "existsAt": "src/layouts/DashboardLayout.tsx", "caseMismatch": false },
+        { "spec": "../../components/Button", "type": "relative", "resolved": true, "existsAt": "src/components/Button.tsx", "caseMismatch": false },
+        { "spec": "../../components/DynamicField", "type": "relative", "resolved": true, "existsAt": "src/components/DynamicField.tsx", "caseMismatch": false },
+        { "spec": "../../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../../repositories/forms.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/forms.repository.ts", "caseMismatch": false },
+        { "spec": "../../repositories/form-fields.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/form-fields.repository.ts", "caseMismatch": false },
+        { "spec": "../../services/submissions.service", "type": "relative", "resolved": true, "existsAt": "src/services/submissions.service.ts", "caseMismatch": false },
+        { "spec": "../../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" }
+      ]
+    },
+    {
+      "file": "src/pages/superadmin/SuperAdminDashboard.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../layouts/DashboardLayout", "type": "relative", "resolved": true, "existsAt": "src/layouts/DashboardLayout.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../repositories/companies.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/companies.repository.ts", "caseMismatch": false },
+        { "spec": "../../repositories/users.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/users.repository.ts", "caseMismatch": false },
+        { "spec": "../../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/pages/superadmin/CompaniesManagement.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../layouts/DashboardLayout", "type": "relative", "resolved": true, "existsAt": "src/layouts/DashboardLayout.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../../repositories/companies.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/companies.repository.ts", "caseMismatch": false },
+        { "spec": "../../repositories/storage.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/storage.repository.ts", "caseMismatch": false },
+        { "spec": "../../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false },
+        { "spec": "../../components/Modal", "type": "relative", "resolved": true, "existsAt": "src/components/Modal.tsx", "caseMismatch": false },
+        { "spec": "../../components/Input", "type": "relative", "resolved": true, "existsAt": "src/components/Input.tsx", "caseMismatch": false },
+        { "spec": "../../components/Select", "type": "relative", "resolved": true, "existsAt": "src/components/Select.tsx", "caseMismatch": false },
+        { "spec": "../../components/Button", "type": "relative", "resolved": true, "existsAt": "src/components/Button.tsx", "caseMismatch": false },
+        { "spec": "../../components/ImageUpload", "type": "relative", "resolved": true, "existsAt": "src/components/ImageUpload.tsx", "caseMismatch": false }
+      ]
+    },
+    {
+      "file": "src/pages/superadmin/UsersManagement.tsx",
+      "imports": [
+        { "spec": "react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "react-router-dom", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../layouts/DashboardLayout", "type": "relative", "resolved": true, "existsAt": "src/layouts/DashboardLayout.tsx", "caseMismatch": false },
+        { "spec": "lucide-react", "type": "external", "resolved": true, "existsAt": "node_modules" },
+        { "spec": "../../hooks/useAuth", "type": "relative", "resolved": true, "existsAt": "src/hooks/useAuth.ts", "caseMismatch": false },
+        { "spec": "../../repositories/users.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/users.repository.ts", "caseMismatch": false },
+        { "spec": "../../repositories/companies.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/companies.repository.ts", "caseMismatch": false },
+        { "spec": "../../repositories/auth.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/auth.repository.ts", "caseMismatch": false },
+        { "spec": "../../repositories/storage.repository", "type": "relative", "resolved": true, "existsAt": "src/repositories/storage.repository.ts", "caseMismatch": false },
+        { "spec": "../../types/database.types", "type": "relative", "resolved": true, "existsAt": "src/types/database.types.ts", "caseMismatch": false },
+        { "spec": "../../components/Modal", "type": "relative", "resolved": true, "existsAt": "src/components/Modal.tsx", "caseMismatch": false },
+        { "spec": "../../components/Input", "type": "relative", "resolved": true, "existsAt": "src/components/Input.tsx", "caseMismatch": false },
+        { "spec": "../../components/Select", "type": "relative", "resolved": true, "existsAt": "src/components/Select.tsx", "caseMismatch": false },
+        { "spec": "../../components/Button", "type": "relative", "resolved": true, "existsAt": "src/components/Button.tsx", "caseMismatch": false },
+        { "spec": "../../components/ImageUpload", "type": "relative", "resolved": true, "existsAt": "src/components/ImageUpload.tsx", "caseMismatch": false }
+      ]
+    }
+  ],
+  "notes": [
+    "Todos los imports se resuelven correctamente",
+    "No se detectaron problemas de case sensitivity",
+    "No existen imports a FormBuilder ni FormEditor que podría causar problemas",
+    "El proyecto usa imports relativos consistentes con estructura de directorios"
+  ]
+}

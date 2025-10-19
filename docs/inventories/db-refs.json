@@ -1,0 +1,589 @@
+{
+  "tables": [
+    {
+      "name": "users",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [13, 38, 60, 73, 97] },
+        { "file": "src/repositories/users.repository.ts", "lines": [7, 17, 28, 39, 54, 66, 75, 86] },
+        { "file": "src/types/database.types.ts", "lines": [10] }
+      ]
+    },
+    {
+      "name": "companies",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [7, 17, 28, 39, 56, 71, 80, 96] },
+        { "file": "src/types/database.types.ts", "lines": [21] }
+      ]
+    },
+    {
+      "name": "forms",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [7, 18, 26, 36, 52] },
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [8, 21] },
+        { "file": "src/types/database.types.ts", "lines": [30] }
+      ]
+    },
+    {
+      "name": "form_fields",
+      "files": [
+        { "file": "src/repositories/form-fields.repository.ts", "lines": [7, 18, 29] },
+        { "file": "src/repositories/forms.repository.ts", "lines": [40] },
+        { "file": "src/types/database.types.ts", "lines": [41] }
+      ]
+    },
+    {
+      "name": "form_assignments",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [7, 19, 29, 43] },
+        { "file": "src/types/database.types.ts", "lines": [64] }
+      ]
+    },
+    {
+      "name": "form_submissions",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [7, 18, 36, 48, 63, 78, 89] },
+        { "file": "src/types/database.types.ts", "lines": [76] }
+      ]
+    },
+    {
+      "name": "file_attachments",
+      "files": [
+        { "file": "src/repositories/file-attachments.repository.ts", "lines": [7, 18, 28] },
+        { "file": "src/repositories/storage.repository.ts", "lines": [48] },
+        { "file": "src/types/database.types.ts", "lines": [89] }
+      ]
+    }
+  ],
+  "columns": [
+    {
+      "table": "users",
+      "column": "id",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [16, 40, 62, 75, 100] },
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 76, 82, 88] }
+      ]
+    },
+    {
+      "table": "users",
+      "column": "name",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [17, 61, 101] },
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 29] }
+      ]
+    },
+    {
+      "table": "users",
+      "column": "email",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [18, 61, 102] },
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 29, 77] }
+      ]
+    },
+    {
+      "table": "users",
+      "column": "role",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [19, 61, 103] },
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 29, 50] }
+      ]
+    },
+    {
+      "table": "users",
+      "column": "company_id",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [61, 74, 104] },
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 29, 51] }
+      ]
+    },
+    {
+      "table": "users",
+      "column": "created_by",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [61, 105] }
+      ]
+    },
+    {
+      "table": "users",
+      "column": "created_at",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [61] },
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 29] }
+      ]
+    },
+    {
+      "table": "users",
+      "column": "last_login_at",
+      "files": [
+        { "file": "src/repositories/auth.repository.ts", "lines": [39, 61] },
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 29] }
+      ],
+      "notes": "Se actualiza MANUALMENTE en signIn (línea 39 de auth.repository)"
+    },
+    {
+      "table": "users",
+      "column": "avatar_url",
+      "files": [
+        { "file": "src/repositories/users.repository.ts", "lines": [8, 87] },
+        { "file": "src/pages/superadmin/UsersManagement.tsx", "lines": [296, 408, 413] },
+        { "file": "src/types/database.types.ts", "lines": [10] }
+      ],
+      "notes": "CRÍTICO: avatar_url existe en types pero NO en getCurrentUserWithRole ni getUserProfile"
+    },
+    {
+      "table": "companies",
+      "column": "id",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [8, 41, 81, 98] }
+      ]
+    },
+    {
+      "table": "companies",
+      "column": "name",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [8, 42] }
+      ]
+    },
+    {
+      "table": "companies",
+      "column": "company_type",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [8, 44] }
+      ]
+    },
+    {
+      "table": "companies",
+      "column": "rut",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [8, 43, 82] }
+      ]
+    },
+    {
+      "table": "companies",
+      "column": "logo_url",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [8, 97] },
+        { "file": "src/pages/superadmin/CompaniesManagement.tsx", "lines": [143, 185] }
+      ],
+      "notes": "logo_url se actualiza por separado después de subir a storage"
+    },
+    {
+      "table": "companies",
+      "column": "created_at",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [8] }
+      ]
+    },
+    {
+      "table": "companies",
+      "column": "updated_at",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [8, 59] }
+      ],
+      "notes": "CRÍTICO: updated_at se setea MANUALMENTE en updateCompany (línea 59)"
+    },
+    {
+      "table": "companies",
+      "column": "created_by",
+      "files": [
+        { "file": "src/repositories/companies.repository.ts", "lines": [45] }
+      ],
+      "notes": "POSIBLE DISCREPANCIA: created_by se usa en código pero podría no estar en DB"
+    },
+    {
+      "table": "forms",
+      "column": "id",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [8, 19, 36] }
+      ]
+    },
+    {
+      "table": "forms",
+      "column": "form_name",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [8, 19] },
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [8, 21] }
+      ]
+    },
+    {
+      "table": "forms",
+      "column": "description",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [8] },
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [8] }
+      ]
+    },
+    {
+      "table": "forms",
+      "column": "target_type",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [8, 19] },
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [8, 21] }
+      ]
+    },
+    {
+      "table": "forms",
+      "column": "owner_company_id",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [8, 9, 20] }
+      ]
+    },
+    {
+      "table": "forms",
+      "column": "updated_at",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [8, 10, 19, 21] }
+      ],
+      "notes": "CRÍTICO: Se asume que DB actualiza updated_at automáticamente (trigger?)"
+    },
+    {
+      "table": "forms",
+      "column": "version",
+      "files": [
+        { "file": "src/repositories/forms.repository.ts", "lines": [8] }
+      ]
+    },
+    {
+      "table": "forms",
+      "column": "form_prompt",
+      "files": [],
+      "notes": "CRÍTICO: NO aparece en código frontend pero debería existir en DB (mencionado en spec)"
+    },
+    {
+      "table": "form_fields",
+      "column": "id",
+      "files": [
+        { "file": "src/repositories/form-fields.repository.ts", "lines": [] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "form_id",
+      "files": [
+        { "file": "src/repositories/form-fields.repository.ts", "lines": [9] },
+        { "file": "src/repositories/forms.repository.ts", "lines": [42] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "label",
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [44] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "type",
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [45] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "field_order",
+      "files": [
+        { "file": "src/repositories/form-fields.repository.ts", "lines": [10] },
+        { "file": "src/repositories/forms.repository.ts", "lines": [43] },
+        { "file": "src/types/database.types.ts", "lines": [46] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "required",
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [47] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "options",
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [48] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "ai_validation_prompt",
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [49] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "created_at",
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [50] }
+      ]
+    },
+    {
+      "table": "form_fields",
+      "column": "updated_at",
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [51] }
+      ],
+      "notes": "CRÍTICO: Se asume que DB actualiza updated_at automáticamente"
+    },
+    {
+      "table": "form_submissions",
+      "column": "id",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [20, 80] }
+      ]
+    },
+    {
+      "table": "form_submissions",
+      "column": "form_id",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [21, 91] }
+      ]
+    },
+    {
+      "table": "form_submissions",
+      "column": "target_id",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [22, 92] }
+      ]
+    },
+    {
+      "table": "form_submissions",
+      "column": "values_json",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [23, 50] }
+      ]
+    },
+    {
+      "table": "form_submissions",
+      "column": "status",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [24, 65] }
+      ]
+    },
+    {
+      "table": "form_submissions",
+      "column": "submitted_by",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [25] }
+      ]
+    },
+    {
+      "table": "form_submissions",
+      "column": "submitted_at",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [66, 93] }
+      ],
+      "notes": "Se setea MANUALMENTE en submitSubmission"
+    },
+    {
+      "table": "form_submissions",
+      "column": "updated_at",
+      "files": [
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [51] }
+      ],
+      "notes": "CRÍTICO: Se setea MANUALMENTE en saveValues (línea 51)"
+    },
+    {
+      "table": "form_assignments",
+      "column": "id",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [21, 44] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "form_id",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [8, 21, 45] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "owner_company_id",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [21, 46] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "assigned_company_id",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [9, 21, 23, 47] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "assignment_type",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [48] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "is_active",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [10, 21, 49] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "can_share",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [50] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "expires_at",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [21] }
+      ]
+    },
+    {
+      "table": "form_assignments",
+      "column": "created_at",
+      "files": [
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [11, 21, 24] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "id",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [49] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "submission_id",
+      "files": [
+        { "file": "src/repositories/file-attachments.repository.ts", "lines": [20] },
+        { "file": "src/repositories/storage.repository.ts", "lines": [50] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "field_id",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [51] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "file_name",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [52] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "file_size",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [53] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "mime_type",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [54] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "storage_path",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [55] }
+      ]
+    },
+    {
+      "table": "file_attachments",
+      "column": "uploaded_by",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [56] }
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "enumName": "UserRole",
+      "valuesSeenInCode": ["SUPER_ADMIN", "ADMIN", "USER"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [1] },
+        { "file": "src/App.tsx", "lines": [25, 52, 61] }
+      ]
+    },
+    {
+      "enumName": "CompanyType",
+      "valuesSeenInCode": ["CLIENT", "SUPPLIER", "PARTNER", "INTERNAL"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [2] }
+      ]
+    },
+    {
+      "enumName": "FormTargetType",
+      "valuesSeenInCode": ["COMPANY", "PERSON", "VEHICLE", "EQUIPMENT"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [3] }
+      ]
+    },
+    {
+      "enumName": "FieldType",
+      "valuesSeenInCode": ["text", "number", "date", "email", "phone", "textarea", "file", "select", "checkbox", "radio"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [4] },
+        { "file": "src/components/DynamicField.tsx", "lines": [] }
+      ]
+    },
+    {
+      "enumName": "RequestStatus",
+      "valuesSeenInCode": ["PENDING", "APPROVED", "REJECTED", "EXPIRED"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [5] }
+      ]
+    },
+    {
+      "enumName": "AssignmentType",
+      "valuesSeenInCode": ["DIRECT", "REQUESTED", "INHERITED"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [6] },
+        { "file": "src/repositories/form-assignments.repository.ts", "lines": [48] }
+      ]
+    },
+    {
+      "enumName": "SubmissionStatus",
+      "valuesSeenInCode": ["DRAFT", "SUBMITTED", "VALIDATED", "REJECTED", "APPROVED"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [7] },
+        { "file": "src/repositories/form-submissions.repository.ts", "lines": [24, 65] }
+      ]
+    },
+    {
+      "enumName": "ValidationStatus",
+      "valuesSeenInCode": ["PENDING", "IN_PROGRESS", "COMPLETED", "FAILED"],
+      "files": [
+        { "file": "src/types/database.types.ts", "lines": [8] }
+      ]
+    }
+  ],
+  "buckets": [
+    {
+      "name": "form-attachments",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [14, 23, 41, 64, 72] }
+      ],
+      "notes": "Usado para archivos adjuntos de formularios"
+    },
+    {
+      "name": "company-logos",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [87, 93] }
+      ],
+      "notes": "Usado para logos de empresas, upsert:true"
+    },
+    {
+      "name": "user-avatars",
+      "files": [
+        { "file": "src/repositories/storage.repository.ts", "lines": [108, 114] }
+      ],
+      "notes": "Usado para avatares de usuarios, upsert:true"
+    }
+  ]
+}

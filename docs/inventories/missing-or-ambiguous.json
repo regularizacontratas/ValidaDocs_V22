@@ -1,0 +1,62 @@
+{
+  "summary": {
+    "missingFiles": 0,
+    "caseMismatches": 0,
+    "ambiguousReferences": 2,
+    "duplicatedModules": 0
+  },
+  "missingFiles": [],
+  "caseMismatches": [],
+  "ambiguousReferences": [
+    {
+      "type": "MISSING_COMPONENT",
+      "component": "FormBuilder",
+      "expectedLocation": "src/components/form-builder/FormBuilder.tsx",
+      "actualLocation": "NOT FOUND",
+      "referencedFrom": [],
+      "severity": "LOW",
+      "notes": "FormBuilder no existe pero tampoco se importa en ningún lugar del proyecto actual. Podría ser un componente futuro mencionado en especificaciones."
+    },
+    {
+      "type": "MISSING_COMPONENT",
+      "component": "FormEditor",
+      "expectedLocation": "src/pages/admin/FormEditor.tsx",
+      "actualLocation": "NOT FOUND",
+      "referencedFrom": [],
+      "severity": "LOW",
+      "notes": "FormEditor mencionado en spec pero no existe. AdminDashboard existe pero no tiene funcionalidad de edición de formularios implementada."
+    }
+  ],
+  "duplicatedModules": [],
+  "potentialIssues": [
+    {
+      "type": "INTERFACE_INCONSISTENCY",
+      "description": "User interface en database.types.ts no incluye avatar_url en definición TypeScript",
+      "file": "src/types/database.types.ts",
+      "line": 10,
+      "severity": "MEDIUM",
+      "recommendation": "Agregar avatar_url?: string; a la interfaz User"
+    },
+    {
+      "type": "INTERFACE_INCONSISTENCY",
+      "description": "Company interface en database.types.ts no incluye logo_url ni created_by en definición TypeScript",
+      "file": "src/types/database.types.ts",
+      "line": 21,
+      "severity": "MEDIUM",
+      "recommendation": "Agregar logo_url?: string; y created_by?: string; a la interfaz Company"
+    },
+    {
+      "type": "MISSING_COLUMN_REFERENCE",
+      "description": "form_prompt mencionado en especificaciones pero no se lee ni escribe explícitamente en el código (solo con select *)",
+      "file": "src/repositories/forms.repository.ts",
+      "severity": "MEDIUM",
+      "recommendation": "Decidir si form_prompt debe incluirse en selects explícitos o si está obsoleto"
+    }
+  ],
+  "recommendations": [
+    "Actualizar interfaces TypeScript para incluir avatar_url y logo_url",
+    "Si FormBuilder/FormEditor son futuros, documentarlo en roadmap",
+    "Estandarizar uso de select * vs. select explícito de columnas",
+    "Considerar crear tipos más estrictos para evitar discrepancias entre código y DB"
+  ]
+}

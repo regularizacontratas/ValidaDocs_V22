@@ -1,0 +1,20 @@
+ui_field,label_in_code,db_table,db_column,first_seen_file,line,notes
+ai_prompt,N/A (no existe en UI),forms,form_prompt,N/A,N/A,CRÍTICO: Columna mencionada en spec pero NO usada en frontend
+form_prompt,N/A (no existe en UI),forms,form_prompt,N/A,N/A,Columna existente en DB pero no leída explícitamente (solo con select *)
+field_label,label,form_fields,label,src/types/database.types.ts,44,Mapeo directo
+field_type,type,form_fields,type,src/types/database.types.ts,45,Mapeo directo - enum FieldType
+field_order,field_order,form_fields,field_order,src/types/database.types.ts,46,Mapeo directo - orden de campos
+is_required,required,form_fields,required,src/types/database.types.ts,47,Mapeo directo - campo requerido
+options,options,form_fields,options,src/types/database.types.ts,48,Mapeo directo - opciones para select/radio/checkbox
+ai_validation_prompt,ai_validation_prompt,form_fields,ai_validation_prompt,src/types/database.types.ts,49,Mapeo directo - prompt para validación AI
+logo_url,logo_url,companies,logo_url,src/repositories/companies.repository.ts,8,Usado y actualizado correctamente
+avatar_url,avatar_url,users,avatar_url,src/repositories/users.repository.ts,8,CRÍTICO: NO leído en getCurrentUserWithRole pero sí en getAll
+updated_at,updated_at,companies,updated_at,src/repositories/companies.repository.ts,59,CRÍTICO: Actualizado MANUALMENTE desde frontend - debería ser DB trigger
+updated_at,updated_at,forms,updated_at,src/repositories/forms.repository.ts,8,ASUMIDO: Se asume que DB lo actualiza automáticamente
+updated_at,updated_at,form_fields,updated_at,src/types/database.types.ts,51,ASUMIDO: Se asume que DB lo actualiza automáticamente
+updated_at,updated_at,form_submissions,updated_at,src/repositories/form-submissions.repository.ts,51,CRÍTICO: Actualizado MANUALMENTE desde frontend (línea 51)
+submitted_at,submitted_at,form_submissions,submitted_at,src/repositories/form-submissions.repository.ts,66,CRÍTICO: Seteado MANUALMENTE desde frontend
+last_login_at,last_login_at,users,last_login_at,src/repositories/auth.repository.ts,39,CRÍTICO: Actualizado MANUALMENTE desde frontend en signIn
+created_by,created_by,companies,created_by,src/repositories/companies.repository.ts,45,POSIBLE DISCREPANCIA: Columna usada en código pero status DESCONOCIDO en DB
+created_by,created_by,users,created_by,src/repositories/auth.repository.ts,61,Usado en createUserWithRole
+field_name,N/A,N/A,N/A,N/A,N/A,NO EXISTE: Mencionado en spec pero no implementado ni en DB
