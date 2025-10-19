@@ -138,35 +138,6 @@ export const formsRepository = {
     if (error) throw error;
   },
 
-  // CAMPOS
-  async createField(field: Partial<FormField>): Promise<FormField> {
-    const { data, error } = await supabase
-      .from('form_fields')
-      .insert(field)
-      .select('*')
-      .single();
-
-    if (error) throw error;
-    return data;
-  },
-
-  async updateField(id: string, updates: Partial<FormField>): Promise<FormField> {
-    const { data, error } = await supabase
-      .from('form_fields')
-      .update(updates)
-      .eq('id', id)
-      .select('*')
-      .single();
-
-    if (error) throw error;
-    return data;
-  },
-
-  async deleteField(id: string): Promise<void> {
-    const { error } = await supabase.from('form_fields').delete().eq('id', id);
-    if (error) throw error;
-  },
-
   // ⭐ Formularios asignados
   async getAssignedForms(companyId: string) {
     const { data, error } = await supabase
@@ -262,8 +233,7 @@ export const formsRepository = {
         status: params.status,
         values_json: params.values,
         files_json: params.files,
-        submitted_at:
-          params.status === 'SUBMITTED' ? new Date().toISOString() : null,
+        // submitted_at se debe gestionar en DB con DEFAULT o trigger
       })
       .select('id')
       .single();
@@ -607,9 +577,7 @@ export const formsRepository = {
         values_json: params.values,
         files_json: params.files,
         status: params.status || 'DRAFT',
-        updated_at: new Date().toISOString(),
-        submitted_at:
-          params.status === 'SUBMITTED' ? new Date().toISOString() : null,
+        // updated_at y submitted_at deben ser gestionados por la DB
       })
       .eq('id', submissionId)
       .select('id')
