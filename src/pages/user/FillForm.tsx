@@ -88,10 +88,11 @@ export function FillForm() {
             // Cargar archivos adjuntos desde la tabla correcta
             const { data: attachments } = await fileAttachmentsRepository.getBySubmission(submissionId);
             if (attachments && attachments.length > 0) {
-              const filesMap = attachments.reduce((acc, att) => {
-                acc[att.field_id] = att;
+              const filesMap = attachments.reduce((acc: { [fieldId: string]: any }, att) => {
+                acc[att.field_id] = att; // Agrupar por field_id
                 return acc;
-              setExistingFiles(filesMap);
+              }, {});
+              setExistingFiles(filesMap); // Actualizar el estado fuera del reduce
             }
           } catch (err) {
             console.error('Error cargando borrador:', err);
