@@ -242,31 +242,6 @@ export const formsRepository = {
     return data;
   },
 
-  /** Sube un archivo a Supabase Storage y devuelve URL pública */
-  async uploadFile(
-    file: File,
-    submissionId: string,
-    fieldId: string
-  ): Promise<string> {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${submissionId}/${fieldId}_${Date.now()}.${fileExt}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('form-attachments')
-      .upload(fileName, file, {
-        cacheControl: '3600',
-        upsert: false,
-      });
-
-    if (uploadError) throw uploadError;
-
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from('form-attachments').getPublicUrl(fileName);
-
-    return publicUrl;
-  },
-
   /** ✅ Obtiene las submissions de un usuario (con firstFields) */
   async getUserSubmissions(userId: string) {
     const { data, error } = await supabase
