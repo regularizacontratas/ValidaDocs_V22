@@ -5,7 +5,7 @@ import { DashboardLayout } from "../../layouts/DashboardLayout";
 import { formsRepository } from "../../repositories/forms.repository";
 import { formFieldsRepository } from "../../repositories/form-fields.repository";
 import { useAuth } from "../../hooks/useAuth";
-import { ArrowLeft, ChevronRight, FileText, Loader2, CheckCircle, AlertCircle, User, Building } from "lucide-react";
+import { ArrowLeft, ChevronRight, FileText, Loader2, CheckCircle, AlertCircle, User, Building, UploadCloud } from "lucide-react";
 import { Button } from "../../components/Button";
 
 export function AdminFormBuilder() {
@@ -14,6 +14,7 @@ export function AdminFormBuilder() {
   const [jsonPreview, setJsonPreview] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
+  const [fileName, setFileName] = useState("");
   const [error, setError] = useState("");
 
   // 🧩 Cargar JSON
@@ -21,11 +22,13 @@ export function AdminFormBuilder() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setFileName(file.name);
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
         const json = JSON.parse(event.target?.result as string);
         setJsonPreview(json);
+        setSuccess(`Archivo "${file.name}" cargado y procesado correctamente.`);
         setError("");
       } catch {
         setError("El archivo no tiene un formato JSON válido.");
@@ -55,7 +58,7 @@ export function AdminFormBuilder() {
         created_by: user.id,
       };
 
-      const { data: form, error: formError } = await formsRepository.create(formData);
+    const form = await formsRepository.create(formData);
       if (formError) throw new Error(formError.message);
 
       // Paso 2: Crear campos asociados
@@ -70,7 +73,7 @@ export function AdminFormBuilder() {
       }));
 
       for (const field of fields) {
-        await formFieldsRepository.create(field);
+      await formFieldsRepository.create(field);
       }
 
       setSuccess("Formulario creado exitosamente.");
@@ -110,7 +113,18 @@ export function AdminFormBuilder() {
             Carga un archivo JSON con la definición del formulario. Podrás editarlo después si lo deseas.
           </p>
 
-          <input type="file" accept=".json" onChange={handleFileUpload} className="mb-4" />
+      <label htmlFor="json-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500 border-2 border-dashed border-gray-300 flex justify-center items-center p-6 mb-4">
+        <div className="text-center">
+          <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
+          <span className="mt-2 block text-sm font-medium text-gray-900">
+            {fileName ? fileName : "Selecciona un archivo JSON"}
+          </span>
+          <p className="text-xs text-gray-500">
+            O arrástralo aquí
+          </p>
+        </div>
+        <input id="json-upload" name="json-upload" type="file" className="sr-only" accept=".json" onChange={handleFileUpload} />
+      </label>
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center text-sm text-red-700 mb-4">
