@@ -18,6 +18,8 @@ import { FormField } from '../../types/database.types';
 import { fileAttachmentsRepository } from '../../repositories/file-attachments.repository';
 import { AIProcessingModal } from '../../components/AIProcessingModal';
 import { Modal } from '../../components/Modal';
+import { storageRepository } from '../../repositories/storage.repository';
+import { supabase } from '../../lib/supabase';
 
 interface FormValues {
   [fieldId: string]: string | boolean | File | null;
@@ -78,11 +80,10 @@ export function FillForm() {
 
         if (submissionId) {
           try { // Cargar datos de un borrador existente
-            const submissionData = await formsRepository.getSubmissionDetail(submissionId);
-
-            if (submissionData.fields) {
-              submissionData.fields.forEach((field: any) => {
-                initialValues[field.fieldId] = field.value || '';
+            const { data: sub } = await supabase.from('form_submissions').select('values_json').eq('id', submissionId).single();
+            if (sub?.values_json) {
+              Object.keys(sub.values_json).forEach((fieldId) => {
+                initialValues[fieldId] = sub.values_json[fieldId];
               });
             }
 
@@ -577,10 +578,10 @@ export function FillForm() {
                   <FileText className="w-8 h-8 text-green-600" />
                   <div>
                     <p className="text-sm font-medium text-gray-900" title={existingFile.file_name}>
-                      {existingFile.label || 'Archivo guardado'}
+                      {existingFile.file_name || 'Archivo guardado'}
                     </p>
                     <a
-                      href={existingFile.url}
+                      href={storageRepository.getPublicUrl(existingFile.storage_path)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs text-blue-600 hover:underline"
