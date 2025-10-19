@@ -22,8 +22,6 @@ interface Submission {
   status: string;
   submittedAt: string | null;
   updatedAt: string;
-  nombre: string;
-  apellido: string;
   filesCount: number;
   /** Valores de los primeros campos del formulario, ordenados según field_order */
   firstFields: Array<{ id: string; label: string; type: string; value: any }>;
@@ -108,9 +106,7 @@ export function UserSubmissions() {
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
       filtered = filtered.filter((s) => {
-        // Buscar en nombre, apellido, nombre del formulario y valores de los primeros campos
-        const inNombre = s.nombre.toLowerCase().includes(search);
-        const inApellido = s.apellido.toLowerCase().includes(search);
+        // Buscar en nombre del formulario y valores de los primeros campos
         const inForm = s.formName.toLowerCase().includes(search);
         // Algunas submissions podrían no tener firstFields; usar opcional encadenado
         const inFields =
@@ -118,7 +114,7 @@ export function UserSubmissions() {
             if (!f || f.value === null || f.value === undefined) return false;
             return String(f.value).toLowerCase().includes(search);
           }) ?? false;
-        return inNombre || inApellido || inForm || inFields;
+        return inForm || inFields;
       });
     }
 
