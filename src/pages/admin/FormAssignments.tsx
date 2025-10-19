@@ -193,3 +193,6 @@ export function FormAssignments() {
           </div>
         </div>
       </div>
+    </AppLayout>
+  );
+}
