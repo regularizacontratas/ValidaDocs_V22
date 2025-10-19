@@ -12,6 +12,7 @@ import {
   Zap
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { formSubmissionsRepository } from '../../repositories/submissions.repository';
 import { formsRepository } from '../../repositories/forms.repository';
 import { FormField } from '../../types/database.types';
 import { fileAttachmentsRepository } from '../../repositories/file-attachments.repository';
