@@ -18,8 +18,6 @@ import { FormField } from '../../types/database.types';
 import { fileAttachmentsRepository } from '../../repositories/file-attachments.repository';
 import { AIProcessingModal } from '../../components/AIProcessingModal';
 import { Modal } from '../../components/Modal';
-import { storageRepository } from '../../repositories/storage.repository';
-import { supabase } from '../../lib/supabase';
 
 interface FormValues {
   [fieldId: string]: string | boolean | File | null;
@@ -80,12 +78,16 @@ export function FillForm() {
 
         if (submissionId) {
           try { // Cargar datos de un borrador existente
-            const { data: sub } = await supabase.from('form_submissions').select('values_json').eq('id', submissionId).single();
-            if (sub?.values_json) {
-              Object.keys(sub.values_json).forEach((fieldId) => {
-                initialValues[fieldId] = sub.values_json[fieldId];
-              });
-            }
+            const { data: submissionData, error: submissionError } = await supabase
+              .from('form_submissions')
+              .select('values_json')
+              .eq('id', submissionId)
+              .single();
+            if (submissionError) throw submissionError;
+
+            if (submissionData?.values_json) {
+              Object.assign(initialValues, submissionData.values_json);
+            } 
 
             // Cargar archivos adjuntos desde la tabla correcta
             const { data: attachments } = await fileAttachmentsRepository.getBySubmission(submissionId);
@@ -578,10 +580,10 @@ export function FillForm() {
                   <FileText className="w-8 h-8 text-green-600" />
                   <div>
                     <p className="text-sm font-medium text-gray-900" title={existingFile.file_name}>
-                      {existingFile.file_name || 'Archivo guardado'}
+                      {existingFile.label || 'Archivo guardado'}
                     </p>
                     <a
-                      href={storageRepository.getPublicUrl(existingFile.storage_path)}
+                      href={existingFile.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs text-blue-600 hover:underline"
