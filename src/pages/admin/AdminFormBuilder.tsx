@@ -58,12 +58,11 @@ export function AdminFormBuilder() {
         created_by: user.id,
       };
 
-    const form = await formsRepository.create(formData);
-      if (formError) throw new Error(formError.message);
+      const form = await formsRepository.create(formData);
 
       // Paso 2: Crear campos asociados
       const fields = jsonPreview.campos.map((c: any, index: number) => ({
-        form_id: form[0].id,
+        form_id: form.id,
         label: c.etiquetaCampo,
         type: c.tipoDato.toLowerCase(),
         placeholder_text: c.placeholder,
@@ -73,7 +72,7 @@ export function AdminFormBuilder() {
       }));
 
       for (const field of fields) {
-      await formFieldsRepository.create(field);
+        await formFieldsRepository.create(field);
       }
 
       setSuccess("Formulario creado exitosamente.");
@@ -113,18 +112,18 @@ export function AdminFormBuilder() {
             Carga un archivo JSON con la definición del formulario. Podrás editarlo después si lo deseas.
           </p>
 
-      <label htmlFor="json-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500 border-2 border-dashed border-gray-300 flex justify-center items-center p-6 mb-4">
-        <div className="text-center">
-          <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
-          <span className="mt-2 block text-sm font-medium text-gray-900">
-            {fileName ? fileName : "Selecciona un archivo JSON"}
-          </span>
-          <p className="text-xs text-gray-500">
-            O arrástralo aquí
-          </p>
-        </div>
-        <input id="json-upload" name="json-upload" type="file" className="sr-only" accept=".json" onChange={handleFileUpload} />
-      </label>
+          <label htmlFor="json-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500 border-2 border-dashed border-gray-300 flex justify-center items-center p-6 mb-4">
+            <div className="text-center">
+              <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
+              <span className="mt-2 block text-sm font-medium text-gray-900">
+                {fileName ? fileName : "Selecciona un archivo JSON"}
+              </span>
+              <p className="text-xs text-gray-500">
+                O arrástralo aquí
+              </p>
+            </div>
+            <input id="json-upload" name="json-upload" type="file" className="sr-only" accept=".json" onChange={handleFileUpload} />
+          </label>
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center text-sm text-red-700 mb-4">
