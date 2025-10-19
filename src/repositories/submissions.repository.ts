@@ -11,49 +11,41 @@ const DEFAULT_BUCKET =
 
 type AttachmentRow = Record<string, any>;
 
+/**
+ * Extrae el bucket y la ruta de un objeto de fila de adjunto.
+ * Prioriza columnas explícitas y luego intenta inferir de una URL/ruta completa.
+ */
 function extractBucketAndPath(row: AttachmentRow): { bucket: string; path: string } | null {
-  // 1) Caso más estructurado: columnas separadas
-  const bucket =
-    row.bucket || row.storage_bucket || row.bucket_name || null;
+  const explicitBucket = row.bucket || row.storage_bucket || row.bucket_name;
+  const explicitPath = row.path || row.storage_key || row.file_path;
 
-  const directPath =
-    row.path || row.storage_key || row.file_path || null;
-
-  const storagePath: string | null = row.storage_path || row.url || null;
-
-  if (bucket && directPath) {
-    return { bucket: String(bucket), path: String(directPath).replace(/^\/+/, '') };
+  // Caso 1: Columnas explícitas `bucket` y `path` existen.
+  if (explicitBucket && explicitPath) {
+    return { bucket: String(explicitBucket), path: String(explicitPath).replace(/^\/+/, '') };
   }
 
-  // 2) Solo storage_path -> inferimos bucket/clave
-  if (storagePath) {
-    // Normalizamos sin protocolo
-    const clean = String(storagePath).replace(/^https?:\/\/[^/]+\//, '');
-    const parts = clean.split('/').filter(Boolean);
-    if (parts.length === 0) return null;
+  // Caso 2: No hay ruta explícita, intentar derivar de `storage_path` o `url`.
+  const fullPath: string | null = row.storage_path || row.url || null;
+  if (fullPath) {
+    // Eliminar el prefijo de la URL de Supabase para obtener `bucket/path`.
+    const pathWithoutHost = fullPath.replace(/^https?:\/\/[^/]+\/storage\/v1\/object\/public\//, '');
+    const parts = pathWithoutHost.split('/');
 
-    let inferredBucket = DEFAULT_BUCKET;
-    let inferredPath = clean;
-
-    // Si el primer segmento coincide con un bucket conocido, lo usamos como bucket
-    const first = parts[0];
-    if (KNOWN_BUCKETS.includes(first)) {
-      inferredBucket = first;
-      inferredPath = parts.slice(1).join('/');
-    } else if (bucket) {
-      // Si había bucket en otra columna, úsalo
-      inferredBucket = bucket;
-      inferredPath = clean;
-    } else {
-      // Último recurso: DEFAULT_BUCKET
-      inferredPath = clean;
+    if (parts.length < 2) { // Necesitamos al menos un bucket y un nombre de archivo.
+        // Si hay un bucket explícito, lo usamos con la ruta completa.
+        if(explicitBucket) return { bucket: String(explicitBucket), path: pathWithoutHost };
+        // Si no, usamos el bucket por defecto.
+        return { bucket: DEFAULT_BUCKET, path: pathWithoutHost };
     }
 
-    if (!inferredPath) return null;
-    return { bucket: inferredBucket, path: inferredPath.replace(/^\/+/, '') };
+    const potentialBucket = parts[0];
+    const inferredPath = parts.slice(1).join('/');
+    const inferredBucket = KNOWN_BUCKETS.includes(potentialBucket) ? potentialBucket : (explicitBucket || DEFAULT_BUCKET);
+    
+    return { bucket: inferredBucket, path: inferredPath || pathWithoutHost };
   }
 
-  // 3) No encontramos cómo mapear
+  // No se pudo determinar el bucket o la ruta.
   return null;
 }
 
@@ -202,6 +194,16 @@ export const formSubmissionsRepository = {
    * ⚠️ Alias de compatibilidad con código existente.
    */
   async deleteById(submissionId: string): Promise<void> {
-    return this.deleteSubmissionCompletely(submissionId);
+    // Ahora llamamos a la función RPC de la base de datos.
+    // Esta función se encarga de verificar permisos y borrar todo en cascada.
+    // Es más segura y eficiente.
+    const { error } = await supabase.rpc('delete_user_submission', {
+      submission_id_to_delete: submissionId,
+    });
+
+    if (error) {
+      console.error('Error en RPC delete_user_submission:', error);
+      throw new Error(`No se pudo eliminar el registro: ${error.message}`);
+    }
   },
 };
