@@ -1,5 +1,21 @@
 import { supabase } from '../lib/supabase';
 
+/**
+ * Sube un archivo a un bucket y devuelve la ruta relativa y la URL pública.
+ * @param bucketName - El nombre del bucket de destino.
+ * @param filePath - La ruta completa dentro del bucket donde se guardará el archivo.
+ * @param file - El objeto File a subir.
+ * @param options - Opciones de subida de Supabase.
+ */
+async function uploadAndGetUrls(bucketName: string, filePath: string, file: File, options: any) {
+  const { error: uploadError } = await supabase.storage
+    .from(bucketName)
+    .upload(filePath, file, options);
+  if (uploadError) throw uploadError;
+
+  const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(filePath);
+  return { path: filePath, publicUrl: urlData.publicUrl };
+}
 export const storageRepository = {
   async uploadFile(
     companyId: string,
@@ -27,6 +43,25 @@ export const storageRepository = {
       path: filePath,
       url: urlData.publicUrl,
     };
+  },
+
+  /**
+   * Sube un adjunto de formulario y devuelve la ruta relativa y la URL pública.
+   * Esta es la función recomendada para nuevos adjuntos.
+   */
+  async uploadFormAttachment(
+    file: File,
+    submissionId: string,
+    fieldId: string
+  ): Promise<{ path: string; publicUrl: string }> {
+    const fileExt = file.name.split('.').pop() || 'bin';
+    const fileName = `${fieldId}_${Date.now()}.${fileExt}`;
+    const filePath = `${submissionId}/${fileName}`;
+
+    return uploadAndGetUrls('form-attachments', filePath, file, {
+      cacheControl: '3600',
+      upsert: false,
+    });
   },
 
   async uploadAttachment(
