@@ -1,59 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
-import { Loader2, Building2, Plus, X, ArrowLeft } from 'lucide-react';
+import { Loader2, Building2, Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
 import { AppLayout } from '../../layouts/AppLayout';
+import { useFormAssignments } from '../../hooks/useFormAssignments';
 
 export function FormAssignments() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [forms, setForms] = useState<any[]>([]);
-  const [companies, setCompanies] = useState<any[]>([]);
-  const [assignments, setAssignments] = useState<any[]>([]);
+  const { forms, companies, assignments, loading, error: loadError, loadData } = useFormAssignments();
   const [selectedForm, setSelectedForm] = useState('');
   const [selectedCompany, setSelectedCompany] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
-    setLoading(true);
-    try {
-      // Cargar formularios de mi empresa
-      const { data: formsData } = await supabase
-        .from('forms')
-        .select('*')
-        .eq('owner_company_id', user?.company_id);
-      
-      // Cargar todas las empresas menos la mía
-      const { data: companiesData } = await supabase
-        .from('companies')
-        .select('*')
-        .neq('id', user?.company_id);
-
-      // Cargar asignaciones actuales
-      const { data: assignmentsData } = await supabase
-        .from('form_assignments')
-        .select(`
-          *,
-          forms (form_name),
-          companies:assigned_company_id (name)
-        `)
-        .eq('owner_company_id', user?.company_id)
-        .eq('is_active', true);
-
-      setForms(formsData || []);
-      setCompanies(companiesData || []);
-      setAssignments(assignmentsData || []);
-    } catch (error) {
-      console.error('Error cargando datos:', error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function handleAssign() {
     if (!selectedForm || !selectedCompany) return;
@@ -94,7 +52,7 @@ export function FormAssignments() {
     }
   }
 
-  if (loading) {
+  if (loading && assignments.length === 0) {
     return (
       <AppLayout>
         <div className="flex justify-center p-8">
@@ -115,6 +73,18 @@ export function FormAssignments() {
           <ArrowLeft className="w-4 h-4" />
           Volver al Dashboard
         </button>
+
+        {loadError && (
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+            <div className="flex">
+              <div className="py-1"><AlertCircle className="h-5 w-5 text-red-500 mr-3" /></div>
+              <div>
+                <p className="font-bold">Error al cargar</p>
+                <p className="text-sm">{loadError}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <h2 className="text-2xl font-bold mb-6">Asignación de Formularios</h2>
 
@@ -165,7 +135,11 @@ export function FormAssignments() {
             <h3 className="text-lg font-semibold">Asignaciones Activas</h3>
           </div>
           <div className="divide-y">
-            {assignments.length === 0 ? (
+            {loading && assignments.length === 0 ? (
+              <div className="flex justify-center p-8">
+                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+              </div>
+            ) : assignments.length === 0 ? (
               <p className="p-6 text-gray-500 text-center">
                 No hay asignaciones activas
               </p>
