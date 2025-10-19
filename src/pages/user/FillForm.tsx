@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 import { formsRepository } from '../../repositories/forms.repository';
 import { FormField } from '../../types/database.types';
+import { fileAttachmentsRepository } from '../../repositories/file-attachments.repository';
 import { AIProcessingModal } from '../../components/AIProcessingModal';
 import { Modal } from '../../components/Modal';
 
@@ -41,6 +42,7 @@ export function FillForm() {
   const [showAIProcessing, setShowAIProcessing] = useState(false);
   const [currentSubmissionId, setCurrentSubmissionId] = useState<string | null>(null);
 
+
   // Estados para el llenado rápido por JSON
   const [showQuickFill, setShowQuickFill] = useState(false);
   const [quickFillJson, setQuickFillJson] = useState('');
@@ -48,6 +50,7 @@ export function FillForm() {
 
   useEffect(() => {
     loadForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formId, submissionId]);
 
   async function loadForm() {
@@ -73,7 +76,7 @@ export function FillForm() {
         });
 
         if (submissionId) {
-          try {
+          try { // Cargar datos de un borrador existente
             const submissionData = await formsRepository.getSubmissionDetail(submissionId);
 
             if (submissionData.fields) {
@@ -82,14 +85,12 @@ export function FillForm() {
               });
             }
 
-            if (submissionData.files && submissionData.files.length > 0) {
-              const filesMap: { [fieldId: string]: any } = {};
-              submissionData.files.forEach((file: any) => {
-                const matchingField = data.fields.find((f) => f.label === file.label);
-                if (matchingField) {
-                  filesMap[matchingField.id] = file;
-                }
-              });
+            // Cargar archivos adjuntos desde la tabla correcta
+            const { data: attachments } = await fileAttachmentsRepository.getBySubmission(submissionId);
+            if (attachments && attachments.length > 0) {
+              const filesMap = attachments.reduce((acc, att) => {
+                acc[att.field_id] = att;
+                return acc;
               setExistingFiles(filesMap);
             }
           } catch (err) {
@@ -350,61 +351,40 @@ export function FillForm() {
         throw new Error('Faltan datos del usuario o formulario');
       }
 
-      const fieldValues: { [fieldId: string]: string | boolean } = {};
+      // 1. Crear o encontrar la submission
+      let finalSubmissionId = submissionId;
+      if (!finalSubmissionId) {
+        const newSubmission = await formSubmissionsRepository.createDraft(formId, user.company_id || user.id, user.id);
+        finalSubmissionId = newSubmission.id;
+      }
 
+      // 2. Subir nuevos archivos y crear registros en `file_attachments`
+      const fileFields = fields.filter((field) => field.type === 'file');
+      for (const field of fileFields) {
+        const file = values[field.id] as File | null;
+        if (file) {
+          await fileAttachmentsRepository.uploadAndCreateRecord(
+            file,
+            finalSubmissionId,
+            field.id,
+            user.id
+          );
+        }
+      }
+
+      // 3. Actualizar los valores de texto y el estado
+      const fieldValues: { [fieldId: string]: string | boolean } = {};
       fields
         .filter((field) => field.type !== 'file')
         .forEach((field) => {
           const value = values[field.id];
-          if (value !== '' && value !== null && value !== undefined) {
-            fieldValues[field.id] = value as string | boolean;
-          }
+          fieldValues[field.id] = value as string | boolean;
         });
 
-      const filesMetadata: {
-        [fieldId: string]: { name: string; url: string; size: number; type: string };
-      } = {};
-      const fileFields = fields.filter((field) => field.type === 'file');
-
-      const tempSubmissionId = submissionId || crypto.randomUUID();
-
-      for (const field of fileFields) {
-        const file = values[field.id] as File | null;
-
-        if (file) {
-          const fileUrl = await formsRepository.uploadFile(file, tempSubmissionId, field.id);
-
-          filesMetadata[field.id] = {
-            name: file.name,
-            url: fileUrl,
-            size: file.size,
-            type: file.type,
-          };
-        } else if (existingFiles[field.id]) {
-          filesMetadata[field.id] = existingFiles[field.id];
-        }
-      }
-
-      let finalSubmissionId: string;
-
-      if (submissionId) {
-        await formsRepository.updateSubmission(submissionId, {
-          values: fieldValues,
-          files: filesMetadata,
-          status: isDraft ? 'DRAFT' : 'PENDING_AI_VALIDATION',
-        });
-        finalSubmissionId = submissionId;
-      } else {
-        const newSubmission = await formsRepository.createSubmission({
-          form_id: formId,
-          user_id: user.id,
-          company_id: user.company_id,
-          status: isDraft ? 'DRAFT' : 'PENDING_AI_VALIDATION',
-          values: fieldValues,
-          files: filesMetadata,
-        });
-        finalSubmissionId = newSubmission.id;
-      }
+      await formSubmissionsRepository.update(finalSubmissionId, {
+        values_json: fieldValues,
+        status: isDraft ? 'DRAFT' : 'PENDING_AI_VALIDATION',
+      });
 
       setCurrentSubmissionId(finalSubmissionId);
 
@@ -417,7 +397,7 @@ export function FillForm() {
       } else {
         setSubmitSuccess(true);
         setTimeout(() => {
-          navigate('/user/submissions');
+          navigate('/user/dashboard'); // Redirigir al dashboard principal del usuario
         }, 1500);
       }
     } catch (err) {
@@ -594,7 +574,7 @@ export function FillForm() {
                 <div className="flex items-center gap-3">
                   <FileText className="w-8 h-8 text-green-600" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-gray-900" title={existingFile.file_name}>
                       {existingFile.label || 'Archivo guardado'}
                     </p>
                     <a
