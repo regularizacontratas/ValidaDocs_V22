@@ -20,6 +20,7 @@ interface Submission {
   formId: string;
   formName: string;
   status: string;
+  submitted_at: string | null;
   submittedAt: string | null;
   updatedAt: string;
   filesCount: number;
